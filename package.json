@@ -1,0 +1,27 @@
+{
+	"name": "attendance-api",
+	"version": "1.0.0",
+	"description": "Webservice for attendance app",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon server.js"
+	},
+	"keywords": [
+		"nodejs",
+		"express",
+		"mysql",
+		"restapi"
+	],
+	"author": "oliwerbig",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mysql2": "^2.2.5",
+		"nodemon": "^2.0.6",
+		"sequelize": "^6.3.5"
+	}
+}
