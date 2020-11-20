@@ -1,30 +1,10 @@
 const db = require("../models");
-const Group = db.groups;
 const Session = db.sessions;
-const Student = db.students;
 
-exports.createSession = ({ body: session }, res) => {
-    if (!session.sessionName) {
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-        return;
-    }
+exports.findAllSessions = ({ query: { sessionName }, params: { groupId } }, res) => {
+    var condition = sessionName ? { sessionName: { [Op.like]: `%${sessionName}%` } } : null;
 
-    Session.create(session)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
-exports.findAllSessions = (req, res) => {
-    Session.findAll()
+    Session.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })

@@ -2,8 +2,7 @@ module.exports = app => {
     const sessions = require("../controllers/session.controller.js");
 
     var router = require("express").Router();
-
-    router.post("/", sessions.createSession);
+    
     router.get("/", sessions.findAllSessions);
     router.get("/:sessionId", sessions.findSession);
     router.put("/:sessionId", sessions.updateSession);

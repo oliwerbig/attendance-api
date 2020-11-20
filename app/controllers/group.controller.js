@@ -23,8 +23,10 @@ exports.createGroup = ({ body: group }, res) => {
         });
 };
 
-exports.findAllGroups = (req, res) => {
-    Group.findAll({ include: ["sessions", "students"] })
+exports.findAllGroups = ({ query: { groupName } }, res) => {
+    var condition = groupName ? { groupName: { [Op.like]: `%${groupName}%` } } : null;
+
+    Group.findAll({ where: condition, include: ["sessions", "students"] })
         .then(data => {
             res.send(data);
         })
@@ -93,6 +95,108 @@ exports.deleteGroup = ({ params: { groupId } }, res) => {
 exports.deleteAllGroups = (req, res) => {
     Group.destroy({
         where: {},
+        truncate: false
+    })
+        .then(nums => {
+            res.send({ message: `${nums} entries were deleted successfully!` });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.createSession = ({ params: { groupId }, body: session }, res) => {
+    if (!session.sessionName) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return;
+    }
+
+    Session.create({ ...session, groupId })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.findAllSessions = ({ params: { groupId }, query: { sessionName } }, res) => {
+    var condition = sessionName ? { sessionName: { [Op.like]: `%${sessionName}%` } } : null;
+
+    Session.findAll({ where: condition && { groupId: groupId } })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.deleteAllSessions = ({ params: { groupId } }, res) => {
+    Session.destroy({
+        where: { groupId: groupId },
+        truncate: false
+    })
+        .then(nums => {
+            res.send({ message: `${nums} entries were deleted successfully!` });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.createStudent = ({ params: { groupId }, body: student }, res) => {
+    if (!student.studentName) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return;
+    }
+
+    Student.create({ ...student, groupId })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.findAllStudents = ({ params: { groupId }, query: { studentName } }, res) => {
+    var condition = studentName ? { studentName: { [Op.like]: `%${studentName}%` } } : null;
+
+    Student.findAll({ where: condition && { groupId: groupId } })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.deleteAllStudents = ({ params: { groupId } }, res) => {
+    Student.destroy({
+        where: { groupId: groupId },
         truncate: false
     })
         .then(nums => {
