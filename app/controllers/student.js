@@ -1,11 +1,12 @@
-const db = require("../models");
-const Student = db.students;
+const db = require("../db");
+const Student = db.Student;
+const Attendance = db.Attendance;
+const Session = db.Session;
 
-exports.findAllStudents = (req, res) => {
-    const studentName = req.query.studentName;
-    var condition = studentName ? { studentName: { [Op.like]: `%${studentName}%` } } : null;
+exports.findAllStudents = ({ query: { studentName } }, res) => {
+    var condition = studentName ? { name: { [Op.like]: `%${studentName}%` } } : null;
 
-    Student.findAll({ where: condition })
+    Student.findAll({ where: condition, include: [Attendance] })
         .then(data => {
             res.send(data);
         })
@@ -17,8 +18,8 @@ exports.findAllStudents = (req, res) => {
         });
 };
 
-exports.findStudent = ({ params: { studentId } }, res) => {
-    Student.findByPk(studentId)
+exports.findStudentByPk = ({ params: { studentId } }, res) => {
+    Student.findByPk(studentId, { include: [Attendance] })
         .then(data => {
             res.send(data);
         })
@@ -49,7 +50,7 @@ exports.updateStudent = ({ body: student, params: { studentId } }, res) => {
         });
 };
 
-exports.deleteStudent = ({ params: { studentId } }, res) => {
+exports.destroyStudent = ({ params: { studentId } }, res) => {
     Student.destroy({
         where: { id: studentId }
     })
@@ -71,9 +72,51 @@ exports.deleteStudent = ({ params: { studentId } }, res) => {
         });
 };
 
-exports.deleteAllStudents = (req, res) => {
+exports.destroyAllStudents = (req, res) => {
     Student.destroy({
         where: {},
+        truncate: false
+    })
+        .then(nums => {
+            res.send({ message: `${nums} entries were deleted successfully!` });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.createAttendance = ({ params: { sessionId, studentId }, body: attendance }, res) => {
+    Attendance.create({ ...attendance, studentId, sessionId })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.findAllAttendances = ({ params: { studentId } }, res) => {
+    Attendance.findAll({ where: { studentId: studentId } })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message
+            });
+        });
+};
+
+exports.destroyAllAttendances = ({ params: { studentId } }, res) => {
+    Attendance.destroy({
+        where: { studentId: studentId },
         truncate: false
     })
         .then(nums => {

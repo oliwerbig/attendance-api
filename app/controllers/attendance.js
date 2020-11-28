@@ -1,10 +1,10 @@
-const db = require("../models");
-const Session = db.sessions;
+const db = require("../db");
+const Attendance = db.Attendance;
+const Session = db.Session;
+const Student = db.Student;
 
-exports.findAllSessions = ({ query: { sessionName }, params: { groupId } }, res) => {
-    var condition = sessionName ? { sessionName: { [Op.like]: `%${sessionName}%` } } : null;
-
-    Session.findAll({ where: condition })
+exports.findAllAttendances = (req, res) => {
+    Attendance.findAll({ include: [Session, Student] })
         .then(data => {
             res.send(data);
         })
@@ -16,20 +16,20 @@ exports.findAllSessions = ({ query: { sessionName }, params: { groupId } }, res)
         });
 };
 
-exports.findSession = ({ params: { sessionId } }, res) => {
-    Session.findByPk(sessionId)
+exports.findAttendanceByPk = ({ params: { attendanceId } }, res) => {
+    Attendance.findByPk(attendanceId, { include: [Session, Student] })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving entry with id=" + sessionId
+                message: "Error retrieving entry with id=" + attendanceId
             });
         });
 };
 
-exports.updateSession = ({ body: session, params: { sessionId } }, res) => {
-    Session.update(session, { where: { id: sessionId } })
+exports.updateAttendance = ({ body: attendance, params: { attendanceId } }, res) => {
+    Attendance.update(attendance, { where: { id: attendanceId } })
         .then(num => {
             if (num == 1) {
                 res.send({
@@ -37,20 +37,20 @@ exports.updateSession = ({ body: session, params: { sessionId } }, res) => {
                 });
             } else {
                 res.send({
-                    message: `Cannot update entry with id=${sessionId}. Maybe it was not found or req.body is empty!`
+                    message: `Cannot update entry with id=${attendanceId}. Maybe it was not found or req.body is empty!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating entry with id=" + sessionId
+                message: "Error updating entry with id=" + attendanceId
             });
         });
 };
 
-exports.deleteSession = ({ params: { sessionId } }, res) => {
-    Session.destroy({
-        where: { id: sessionId }
+exports.destroyAttendance = ({ params: { attendanceId } }, res) => {
+    Attendance.destroy({
+        where: { id: attendanceId }
     })
         .then(num => {
             if (num == 1) {
@@ -59,19 +59,19 @@ exports.deleteSession = ({ params: { sessionId } }, res) => {
                 });
             } else {
                 res.send({
-                    message: `Cannot delete entry with id=${sessionId}. Maybe it was not found!`
+                    message: `Cannot delete entry with id=${attendanceId}. Maybe it was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete entry with id=" + sessionId
+                message: "Could not delete entry with id=" + attendanceId
             });
         });
 };
 
-exports.deleteAllSessions = (req, res) => {
-    Session.destroy({
+exports.destroyAllAttendances = (req, res) => {
+    Attendance.destroy({
         where: {},
         truncate: false
     })

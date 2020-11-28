@@ -1,10 +1,10 @@
-const db = require("../models");
-const Group = db.groups;
-const Session = db.sessions;
-const Student = db.students;
+const db = require("../db");
+const Group = db.Group;
+const Session = db.Session;
+const Student = db.Student;
 
 exports.createGroup = ({ body: group }, res) => {
-    if (!group.groupName) {
+    if (!group.name) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
@@ -24,9 +24,9 @@ exports.createGroup = ({ body: group }, res) => {
 };
 
 exports.findAllGroups = ({ query: { groupName } }, res) => {
-    var condition = groupName ? { groupName: { [Op.like]: `%${groupName}%` } } : null;
+    var condition = groupName ? { name: { [Op.like]: `%${groupName}%` } } : null;
 
-    Group.findAll({ where: condition, include: ["sessions", "students"] })
+    Group.findAll({ where: condition, include: [Session, Student] })
         .then(data => {
             res.send(data);
         })
@@ -38,8 +38,8 @@ exports.findAllGroups = ({ query: { groupName } }, res) => {
         });
 };
 
-exports.findGroup = ({ params: { groupId } }, res) => {
-    Group.findByPk(groupId, { include: ["sessions", "students"] })
+exports.findGroupByPk = ({ params: { groupId } }, res) => {
+    Group.findByPk(groupId, { include: [Session, Student] })
         .then(data => {
             res.send(data);
         })
@@ -70,7 +70,7 @@ exports.updateGroup = ({ body: group, params: { groupId } }, res) => {
         });
 };
 
-exports.deleteGroup = ({ params: { groupId } }, res) => {
+exports.destroyGroup = ({ params: { groupId } }, res) => {
     Group.destroy({
         where: { id: groupId }
     })
@@ -92,7 +92,7 @@ exports.deleteGroup = ({ params: { groupId } }, res) => {
         });
 };
 
-exports.deleteAllGroups = (req, res) => {
+exports.destroyAllGroups = (req, res) => {
     Group.destroy({
         where: {},
         truncate: false
@@ -109,7 +109,7 @@ exports.deleteAllGroups = (req, res) => {
 };
 
 exports.createSession = ({ params: { groupId }, body: session }, res) => {
-    if (!session.sessionName) {
+    if (!session.name) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
@@ -129,7 +129,7 @@ exports.createSession = ({ params: { groupId }, body: session }, res) => {
 };
 
 exports.findAllSessions = ({ params: { groupId }, query: { sessionName } }, res) => {
-    var condition = sessionName ? { sessionName: { [Op.like]: `%${sessionName}%` } } : null;
+    var condition = sessionName ? { name: { [Op.like]: `%${sessionName}%` } } : null;
 
     Session.findAll({ where: condition && { groupId: groupId } })
         .then(data => {
@@ -143,7 +143,7 @@ exports.findAllSessions = ({ params: { groupId }, query: { sessionName } }, res)
         });
 };
 
-exports.deleteAllSessions = ({ params: { groupId } }, res) => {
+exports.destroyAllSessions = ({ params: { groupId } }, res) => {
     Session.destroy({
         where: { groupId: groupId },
         truncate: false
@@ -160,7 +160,7 @@ exports.deleteAllSessions = ({ params: { groupId } }, res) => {
 };
 
 exports.createStudent = ({ params: { groupId }, body: student }, res) => {
-    if (!student.studentName) {
+    if (!student.name) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
@@ -180,7 +180,7 @@ exports.createStudent = ({ params: { groupId }, body: student }, res) => {
 };
 
 exports.findAllStudents = ({ params: { groupId }, query: { studentName } }, res) => {
-    var condition = studentName ? { studentName: { [Op.like]: `%${studentName}%` } } : null;
+    var condition = studentName ? { name: { [Op.like]: `%${studentName}%` } } : null;
 
     Student.findAll({ where: condition && { groupId: groupId } })
         .then(data => {
@@ -194,7 +194,7 @@ exports.findAllStudents = ({ params: { groupId }, query: { studentName } }, res)
         });
 };
 
-exports.deleteAllStudents = ({ params: { groupId } }, res) => {
+exports.destroyAllStudents = ({ params: { groupId } }, res) => {
     Student.destroy({
         where: { groupId: groupId },
         truncate: false
