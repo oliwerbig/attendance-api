@@ -4,7 +4,7 @@ const Session = db.Session;
 const Student = db.Student;
 
 exports.createGroup = ({ body: group }, res) => {
-    if (!group.name) {
+    if (!group) {
         res.status(400).send({
             message: "Content cannot be empty!"
         });
@@ -12,8 +12,10 @@ exports.createGroup = ({ body: group }, res) => {
     }
 
     Group.create(group)
-        .then(data => {
-            res.send(data);
+        .then(() => {
+            res.send({
+                message: "Entry created successfully!"
+            });
         })
         .catch(err => {
             res.status(500).send({
@@ -55,7 +57,7 @@ exports.updateGroup = ({ body: group, params: { groupId } }, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Updated successfully."
+                    message: "Entry updated successfully!"
                 });
             } else {
                 res.send({
@@ -117,8 +119,10 @@ exports.createSession = ({ params: { groupId }, body: session }, res) => {
     }
 
     Session.create({ ...session, groupId })
-        .then(data => {
-            res.send(data);
+        .then(() => {
+            res.send({
+                message: "Entry created successfully!"
+            });
         })
         .catch(err => {
             res.status(500).send({
@@ -168,8 +172,10 @@ exports.createStudent = ({ params: { groupId }, body: student }, res) => {
     }
 
     Student.create({ ...student, groupId })
-        .then(data => {
-            res.send(data);
+        .then(() => {
+            res.send({
+                message: "Entry created successfully!"
+            });
         })
         .catch(err => {
             res.status(500).send({

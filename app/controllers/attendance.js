@@ -33,7 +33,7 @@ exports.updateAttendance = ({ body: attendance, params: { attendanceId } }, res)
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Updated successfully."
+                    message: "Entry updated successfully."
                 });
             } else {
                 res.send({

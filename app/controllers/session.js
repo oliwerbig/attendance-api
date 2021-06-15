@@ -35,7 +35,7 @@ exports.updateSession = ({ body: session, params: { sessionId } }, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Updated successfully."
+                    message: "Entry updated successfully."
                 });
             } else {
                 res.send({
@@ -90,8 +90,10 @@ exports.destroyAllSession = (req, res) => {
 
 exports.createAttendance = ({ params: { studentId, sessionId }, body: attendance }, res) => {
     Attendance.create({ ...attendance, studentId, sessionId })
-        .then(data => {
-            res.send(data);
+        .then(() => {
+            res.send({
+                message: "Entry created successfully!"
+            });
         })
         .catch(err => {
             res.status(500).send({
