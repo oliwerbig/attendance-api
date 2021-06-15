@@ -15,10 +15,10 @@ db
   .sync(/*{ force: true }*/)
   .then(() => console.log('done'))
 
-require("./app/routes/group.routes")(app)
-require("./app/routes/session.routes")(app)
-require("./app/routes/student.routes")(app)
-require("./app/routes/attendance.routes")(app)
+require("./app/routes/groupRoutes")(app)
+require("./app/routes/sessionRoutes")(app)
+require("./app/routes/studentRoutes")(app)
+require("./app/routes/attendanceRoutes")(app)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
