@@ -3,7 +3,7 @@ const Attendance = db.Attendance;
 const Session = db.Session;
 const Student = db.Student;
 
-exports.findAllAttendances = (req, res) => {
+exports.findAllAttendance = (req, res) => {
     Attendance.findAll({ include: [Session, Student] })
         .then(data => {
             res.send(data);
@@ -70,7 +70,7 @@ exports.destroyAttendance = ({ params: { attendanceId } }, res) => {
         });
 };
 
-exports.destroyAllAttendances = (req, res) => {
+exports.destroyAllAttendance = (req, res) => {
     Attendance.destroy({
         where: {},
         truncate: false

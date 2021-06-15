@@ -4,19 +4,19 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/", groups.createGroup);
-    router.get("/", groups.findAllGroups);
+    router.get("/", groups.findAllGroup);
     router.get("/:groupId", groups.findGroupByPk);
     router.put("/:groupId", groups.updateGroup);
     router.delete("/:groupId", groups.destroyGroup);
-    router.delete("/", groups.destroyAllGroups);
+    router.delete("/", groups.destroyAllGroup);
 
     router.post("/:groupId/sessions", groups.createSession);
-    router.get("/:groupId/sessions", groups.findAllSessions);
-    router.delete("/:groupId/sessions", groups.destroyAllSessions);
+    router.get("/:groupId/sessions", groups.findAllSession);
+    router.delete("/:groupId/sessions", groups.destroyAllSession);
 
     router.post("/:groupId/students", groups.createStudent);
-    router.get("/:groupId/students", groups.findAllStudents);
-    router.delete("/:groupId/students", groups.destroyAllStudents);
+    router.get("/:groupId/students", groups.findAllStudent);
+    router.delete("/:groupId/students", groups.destroyAllStudent);
 
     app.use('/api/groups', router);
 };

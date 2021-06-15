@@ -23,7 +23,7 @@ exports.createGroup = ({ body: group }, res) => {
         });
 };
 
-exports.findAllGroups = ({ query: { groupName } }, res) => {
+exports.findAllGroup = ({ query: { groupName } }, res) => {
     var condition = groupName ? { name: { [Op.like]: `%${groupName}%` } } : null;
 
     Group.findAll({ where: condition, include: [Session, Student] })
@@ -92,7 +92,7 @@ exports.destroyGroup = ({ params: { groupId } }, res) => {
         });
 };
 
-exports.destroyAllGroups = (req, res) => {
+exports.destroyAllGroup = (req, res) => {
     Group.destroy({
         where: {},
         truncate: false
@@ -128,7 +128,7 @@ exports.createSession = ({ params: { groupId }, body: session }, res) => {
         });
 };
 
-exports.findAllSessions = ({ params: { groupId }, query: { sessionName } }, res) => {
+exports.findAllSession = ({ params: { groupId }, query: { sessionName } }, res) => {
     var condition = sessionName ? { name: { [Op.like]: `%${sessionName}%` } } : null;
 
     Session.findAll({ where: condition && { groupId: groupId } })
@@ -143,7 +143,7 @@ exports.findAllSessions = ({ params: { groupId }, query: { sessionName } }, res)
         });
 };
 
-exports.destroyAllSessions = ({ params: { groupId } }, res) => {
+exports.destroyAllSession = ({ params: { groupId } }, res) => {
     Session.destroy({
         where: { groupId: groupId },
         truncate: false
@@ -179,7 +179,7 @@ exports.createStudent = ({ params: { groupId }, body: student }, res) => {
         });
 };
 
-exports.findAllStudents = ({ params: { groupId }, query: { studentName } }, res) => {
+exports.findAllStudent = ({ params: { groupId }, query: { studentName } }, res) => {
     var condition = studentName ? { name: { [Op.like]: `%${studentName}%` } } : null;
 
     Student.findAll({ where: condition && { groupId: groupId } })
@@ -194,7 +194,7 @@ exports.findAllStudents = ({ params: { groupId }, query: { studentName } }, res)
         });
 };
 
-exports.destroyAllStudents = ({ params: { groupId } }, res) => {
+exports.destroyAllStudent = ({ params: { groupId } }, res) => {
     Student.destroy({
         where: { groupId: groupId },
         truncate: false

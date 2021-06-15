@@ -3,7 +3,7 @@ const Student = db.Student;
 const Attendance = db.Attendance;
 const Session = db.Session;
 
-exports.findAllStudents = ({ query: { studentName } }, res) => {
+exports.findAllStudent = ({ query: { studentName } }, res) => {
     var condition = studentName ? { name: { [Op.like]: `%${studentName}%` } } : null;
 
     Student.findAll({ where: condition, include: [Attendance] })
@@ -72,7 +72,7 @@ exports.destroyStudent = ({ params: { studentId } }, res) => {
         });
 };
 
-exports.destroyAllStudents = (req, res) => {
+exports.destroyAllStudent = (req, res) => {
     Student.destroy({
         where: {},
         truncate: false
@@ -101,7 +101,7 @@ exports.createAttendance = ({ params: { sessionId, studentId }, body: attendance
         });
 };
 
-exports.findAllAttendances = ({ params: { studentId } }, res) => {
+exports.findAllAttendance = ({ params: { studentId } }, res) => {
     Attendance.findAll({ where: { studentId: studentId } })
         .then(data => {
             res.send(data);
@@ -114,7 +114,7 @@ exports.findAllAttendances = ({ params: { studentId } }, res) => {
         });
 };
 
-exports.destroyAllAttendances = ({ params: { studentId } }, res) => {
+exports.destroyAllAttendance = ({ params: { studentId } }, res) => {
     Attendance.destroy({
         where: { studentId: studentId },
         truncate: false
