@@ -6,7 +6,7 @@ const Student = db.Student;
 exports.createGroup = ({ body: group }, res) => {
     if (!group.name) {
         res.status(400).send({
-            message: "Content can not be empty!"
+            message: "Content cannot be empty!"
         });
         return;
     }
@@ -111,7 +111,7 @@ exports.destroyAllGroup = (req, res) => {
 exports.createSession = ({ params: { groupId }, body: session }, res) => {
     if (!session.name) {
         res.status(400).send({
-            message: "Content can not be empty!"
+            message: "Content cannot be empty!"
         });
         return;
     }
@@ -162,7 +162,7 @@ exports.destroyAllSession = ({ params: { groupId } }, res) => {
 exports.createStudent = ({ params: { groupId }, body: student }, res) => {
     if (!student.name) {
         res.status(400).send({
-            message: "Content can not be empty!"
+            message: "Content cannot be empty!"
         });
         return;
     }
