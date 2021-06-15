@@ -4,7 +4,7 @@ const Session = db.Session;
 const Student = db.Student;
 
 exports.findAllAttendance = (req, res) => {
-    Attendance.findAll({ include: [Session, Student] })
+    Attendance.findAll({ include: [] })
         .then(data => {
             res.send(data);
         })
@@ -17,7 +17,7 @@ exports.findAllAttendance = (req, res) => {
 };
 
 exports.findAttendanceByPk = ({ params: { attendanceId } }, res) => {
-    Attendance.findByPk(attendanceId, { include: [Session, Student] })
+    Attendance.findByPk(attendanceId, { include: [] })
         .then(data => {
             res.send(data);
         })
