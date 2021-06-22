@@ -1,7 +1,6 @@
 const db = require("../db");
 const Student = db.Student;
 const Attendance = db.Attendance;
-const Session = db.Session;
 
 exports.findAllStudent = ({ query: { studentName } }, res) => {
     var condition = studentName ? { name: { [Op.like]: `%${studentName}%` } } : null;
@@ -72,22 +71,6 @@ exports.destroyStudent = ({ params: { studentId } }, res) => {
         });
 };
 
-exports.destroyAllStudent = (req, res) => {
-    Student.destroy({
-        where: {},
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
 exports.createAttendance = ({ params: { sessionId, studentId }, body: attendance }, res) => {
     Attendance.create({ ...attendance, studentId, sessionId })
         .then(data => {
@@ -105,22 +88,6 @@ exports.findAllAttendance = ({ params: { studentId } }, res) => {
     Attendance.findAll({ where: { studentId: studentId } })
         .then(data => {
             res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
-exports.destroyAllAttendance = ({ params: { studentId } }, res) => {
-    Attendance.destroy({
-        where: { studentId: studentId },
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
         })
         .catch(err => {
             res.status(500).send({

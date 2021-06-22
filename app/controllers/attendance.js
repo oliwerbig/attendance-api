@@ -1,7 +1,5 @@
 const db = require("../db");
 const Attendance = db.Attendance;
-const Session = db.Session;
-const Student = db.Student;
 
 exports.findAllAttendance = (req, res) => {
     Attendance.findAll({ include: [] })
@@ -66,22 +64,6 @@ exports.destroyAttendance = ({ params: { attendanceId } }, res) => {
         .catch(err => {
             res.status(500).send({
                 message: "Could not delete entry with id=" + attendanceId
-            });
-        });
-};
-
-exports.destroyAllAttendance = (req, res) => {
-    Attendance.destroy({
-        where: {},
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
             });
         });
 };

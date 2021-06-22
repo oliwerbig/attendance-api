@@ -92,22 +92,6 @@ exports.destroyGroup = ({ params: { groupId } }, res) => {
         });
 };
 
-exports.destroyAllGroup = (req, res) => {
-    Group.destroy({
-        where: {},
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
 exports.createSession = ({ params: { groupId }, body: session }, res) => {
     if (!session) {
         res.status(400).send({
@@ -143,22 +127,6 @@ exports.findAllSession = ({ params: { groupId }, query: { sessionName } }, res) 
         });
 };
 
-exports.destroyAllSession = ({ params: { groupId } }, res) => {
-    Session.destroy({
-        where: { groupId: groupId },
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
 exports.createStudent = ({ params: { groupId }, body: student }, res) => {
     if (!student) {
         res.status(400).send({
@@ -185,22 +153,6 @@ exports.findAllStudent = ({ params: { groupId }, query: { studentName } }, res) 
     Student.findAll({ where: condition && { groupId: groupId } })
         .then(data => {
             res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
-            });
-        });
-};
-
-exports.destroyAllStudent = ({ params: { groupId } }, res) => {
-    Student.destroy({
-        where: { groupId: groupId },
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} entries were deleted successfully!` });
         })
         .catch(err => {
             res.status(500).send({
