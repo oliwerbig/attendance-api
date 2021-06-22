@@ -7,11 +7,9 @@ module.exports = app => {
     router.get("/:sessionId", sessions.findSessionByPk);
     router.put("/:sessionId", sessions.updateSession);
     router.delete("/:sessionId", sessions.destroySession);
-    router.delete("/", sessions.destroyAllSession);
 
     router.post("/:sessionId/students/:studentId/attendances", sessions.createAttendance);
     router.get("/:sessionId/attendances", sessions.findAllAttendance);
-    router.delete("/:sessionId/attendances", sessions.destroyAllAttendance);
 
     app.use('/api/sessions', router);
 };

@@ -7,7 +7,6 @@ module.exports = app => {
     router.get("/:attendanceId", attendances.findAttendanceByPk);
     router.put("/:attendanceId", attendances.updateAttendance);
     router.delete("/:attendanceId", attendances.destroyAttendance);
-    router.delete("/", attendances.destroyAllAttendance);
 
     app.use('/api/attendances', router);
 };
