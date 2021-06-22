@@ -90,10 +90,8 @@ exports.destroyAllSession = (req, res) => {
 
 exports.createAttendance = ({ params: { studentId, sessionId }, body: attendance }, res) => {
     Attendance.create({ ...attendance, studentId, sessionId })
-        .then(() => {
-            res.send({
-                message: "Entry created successfully!"
-            });
+        .then(data => {
+            res.send(data);
         })
         .catch(err => {
             res.status(500).send({

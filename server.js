@@ -5,7 +5,10 @@ require('dotenv').config()
 
 const app = express()
 
+const PORT = process.env.PORT || 8080;
+
 app.use(cors())
+app.options('*', cors())
 app.use(express.json())
 app.use(express.urlencoded())
 
@@ -20,8 +23,6 @@ require("./app/routes/sessionRoutes")(app)
 require("./app/routes/studentRoutes")(app)
 require("./app/routes/attendanceRoutes")(app)
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`)
 });

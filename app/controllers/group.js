@@ -12,10 +12,8 @@ exports.createGroup = ({ body: group }, res) => {
     }
 
     Group.create(group)
-        .then(() => {
-            res.send({
-                message: "Entry created successfully!"
-            });
+        .then(data => {
+            res.send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -111,7 +109,7 @@ exports.destroyAllGroup = (req, res) => {
 };
 
 exports.createSession = ({ params: { groupId }, body: session }, res) => {
-    if (!session.name) {
+    if (!session) {
         res.status(400).send({
             message: "Content cannot be empty!"
         });
@@ -119,10 +117,8 @@ exports.createSession = ({ params: { groupId }, body: session }, res) => {
     }
 
     Session.create({ ...session, groupId })
-        .then(() => {
-            res.send({
-                message: "Entry created successfully!"
-            });
+        .then(data => {
+            res.send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -164,7 +160,7 @@ exports.destroyAllSession = ({ params: { groupId } }, res) => {
 };
 
 exports.createStudent = ({ params: { groupId }, body: student }, res) => {
-    if (!student.name) {
+    if (!student) {
         res.status(400).send({
             message: "Content cannot be empty!"
         });
@@ -172,10 +168,8 @@ exports.createStudent = ({ params: { groupId }, body: student }, res) => {
     }
 
     Student.create({ ...student, groupId })
-        .then(() => {
-            res.send({
-                message: "Entry created successfully!"
-            });
+        .then(data => {
+            res.send(data);
         })
         .catch(err => {
             res.status(500).send({
